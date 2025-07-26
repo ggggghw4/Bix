@@ -17,6 +17,13 @@ const firebaseConfig = {
   measurementId: "G-NZ3YXC50RD"
 };
 
+// Google OAuth configuration
+// استخدام متغيرات بيئية أو قيم افتراضية للتطوير المحلي
+export const googleOAuthConfig = {
+  clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+};
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

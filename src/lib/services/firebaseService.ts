@@ -36,7 +36,7 @@ import {
   User
 } from 'firebase/auth';
 
-import { db, auth, storage } from '../firebase';
+import { db, auth, storage, googleOAuthConfig } from '../firebase';
 
 // Types
 export type FirebaseUser = {
@@ -135,6 +135,10 @@ export const authService = {
   async loginWithGoogle(): Promise<User> {
     try {
       const provider = new GoogleAuthProvider();
+      // إضافة معرف العميل المخصص من التكوين
+      provider.setCustomParameters({
+        client_id: googleOAuthConfig.clientId
+      });
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
       
