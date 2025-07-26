@@ -61,7 +61,15 @@ function VideoCard({
   const [isInView, setIsInView] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const { showToast } = useToast();
+  // استخدام try/catch لتجنب الأخطاء إذا كان useToast غير متاح
+  const toast = (() => {
+    try {
+      return useToast();
+    } catch (error) {
+      console.error('Error using useToast:', error);
+      return { showToast: () => {} };
+    }
+  })();
 
   // Handle intersection observer for autoplay when in view
   useEffect(() => {
@@ -121,8 +129,8 @@ function VideoCard({
     setIsLiked(newLikedState);
     
     // إظهار إشعار عند الإعجاب
-    if (newLikedState) {
-      showToast({
+    if (newLikedState && toast.showToast) {
+      toast.showToast({
         type: 'success',
         title: 'تم الإعجاب',
         message: `تم إضافة الفيديو إلى قائمة إعجاباتك`,
@@ -138,8 +146,8 @@ function VideoCard({
     setIsSaved(newSavedState);
     
     // إظهار إشعار عند الحفظ
-    if (newSavedState) {
-      showToast({
+    if (newSavedState && toast.showToast) {
+      toast.showToast({
         type: 'info',
         title: 'تم الحفظ',
         message: `تم حفظ الفيديو في مجموعتك`,

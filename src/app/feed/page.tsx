@@ -37,21 +37,7 @@ export default function FeedPage() {
       setCheckingAuth(false);
       setShouldRender(true);
       
-      // إظهار إشعار ترحيبي - تقليل مدة الإشعار لتحسين تجربة المستخدم
-      if (user) {
-        setTimeout(() => {
-          showToast({
-            type: 'notification',
-            title: 'مرحبًا بك في Bix!',
-            message: 'استمتع بمشاهدة أحدث الفيديوهات الرائجة',
-            duration: 3000, // تقليل المدة من 5000 إلى 3000
-            user: isGuest ? undefined : {
-              username: user.displayName || 'مستخدم Bix',
-              avatar: user.photoURL || 'https://randomuser.me/api/portraits/lego/1.jpg'
-            }
-          });
-        }, 1000);
-      }
+      // تم إزالة إشعار الترحيب بناءً على طلب المستخدم
     }
   }, [user, loading, isGuest, showToast]);
 
