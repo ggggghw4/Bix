@@ -49,7 +49,7 @@ export default function UploadPage() {
   const [error, setError] = useState('');
   
   // حالة واجهة المستخدم
-  const [mode, setMode] = useState<'select' | 'form'>('select');
+  const [mode, setMode] = useState<'select' | 'form' | 'capture' | 'edit'>('select');
   const [isPrivate, setIsPrivate] = useState(false);
   const [allowComments, setAllowComments] = useState(true);
   const [allowDuets, setAllowDuets] = useState(true);
@@ -532,7 +532,7 @@ export default function UploadPage() {
                     {fileType === 'video' ? (
                       <video
                         ref={videoRef}
-                        src={preview}
+                        src={preview || undefined}
                         className="w-full h-full object-contain"
                         controls
                         autoPlay
@@ -541,7 +541,7 @@ export default function UploadPage() {
                       />
                     ) : (
                       <img
-                        src={preview}
+                        src={preview || ''}
                         alt="معاينة الصورة"
                         className="w-full h-full object-contain"
                       />
@@ -562,7 +562,7 @@ export default function UploadPage() {
                         <div className="w-24 h-24 bg-gray-200 rounded-md overflow-hidden flex items-center justify-center">
                           {thumbnailPreview ? (
                             <img
-                              src={thumbnailPreview}
+                              src={thumbnailPreview || ''}
                               alt="معاينة الصورة المصغرة"
                               className="w-full h-full object-cover"
                             />

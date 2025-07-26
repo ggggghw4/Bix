@@ -20,7 +20,7 @@ export default function VideoPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [video, setVideo] = useState(findVideoById(id as string));
-  const [videoComments, setVideoComments] = useState(mockComments[id as string] || []);
+  const [videoComments, setVideoComments] = useState(mockComments[id as keyof typeof mockComments] || []);
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [comment, setComment] = useState('');
@@ -34,7 +34,7 @@ export default function VideoPage() {
     
     // Update video when ID changes
     setVideo(findVideoById(id as string));
-    setVideoComments(mockComments[id as string] || []);
+    setVideoComments(mockComments[id as keyof typeof mockComments] || []);
     
     // Auto-play video when component mounts
     if (videoRef.current) {

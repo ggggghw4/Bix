@@ -2,6 +2,7 @@
   "name": "Bix - شارك لحظاتك",
   "short_name": "Bix",
   "description": "منصة مشاركة الفيديو مشابهة لتطبيق TikTok",
+  "id": "com.bix.app",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -6,14 +6,15 @@ import { getStorage, connectStorageEmulator } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAuFnFMy_J_wXbv9YrusLEWEogjj1jGkAA",
-  authDomain: "bixing-1b152.firebaseapp.com",
-  projectId: "bixing-1b152",
-  storageBucket: "bixing-1b152.appspot.com",
-  messagingSenderId: "1254701904426",
-  appId: "1:1254701904426:web:b744bb191adbB6efc973a1",
-  measurementId: "G-08BZEY1F5M"
+  apiKey: "AIzaSyAOVuRBdKBfEmNGTsopDZzceTZCZWjB254",
+  authDomain: "combixapp.firebaseapp.com",
+  projectId: "combixapp",
+  storageBucket: "combixapp.appspot.com",
+  messagingSenderId: "772803843815",
+  appId: "1:772803843815:web:01d917e388d4578934b442",
+  measurementId: "G-NZ3YXC50RD"
 };
 
 // Initialize Firebase

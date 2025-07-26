@@ -7,7 +7,7 @@ import {
   query, 
   where, 
   orderBy, 
-  limit, 
+  limit as limitQuery, 
   updateDoc, 
   deleteDoc, 
   addDoc,
@@ -227,7 +227,7 @@ export const userService = {
   // الحصول على بيانات المستخدم باسم المستخدم
   async getUserByUsername(username: string): Promise<FirebaseUser | null> {
     try {
-      const usersQuery = query(collection(db, 'users'), where('username', '==', username), limit(1));
+      const usersQuery = query(collection(db, 'users'), where('username', '==', username), limitQuery(1));
       const querySnapshot = await getDocs(usersQuery);
       
       if (!querySnapshot.empty) {
@@ -324,13 +324,13 @@ export const userService = {
   },
   
   // الحصول على قائمة المتابعين
-  async getFollowers(userId: string, limit = 10): Promise<FirebaseUser[]> {
+  async getFollowers(userId: string, limitVal = 10): Promise<FirebaseUser[]> {
     try {
       const followsQuery = query(
         collection(db, 'follows'),
         where('followingId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(followsQuery);
@@ -353,13 +353,13 @@ export const userService = {
   },
   
   // الحصول على قائمة المتابَعين
-  async getFollowing(userId: string, limit = 10): Promise<FirebaseUser[]> {
+  async getFollowing(userId: string, limitVal = 10): Promise<FirebaseUser[]> {
     try {
       const followsQuery = query(
         collection(db, 'follows'),
         where('followerId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(followsQuery);
@@ -493,12 +493,12 @@ export const videoService = {
   },
   
   // الحصول على قائمة الفيديوهات
-  async getVideos(limit = 10): Promise<FirebaseVideo[]> {
+  async getVideos(limitVal = 10): Promise<FirebaseVideo[]> {
     try {
       const videosQuery = query(
         collection(db, 'videos'),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(videosQuery);
@@ -514,13 +514,13 @@ export const videoService = {
   },
   
   // الحصول على فيديوهات مستخدم معين
-  async getUserVideos(userId: string, limit = 10): Promise<FirebaseVideo[]> {
+  async getUserVideos(userId: string, limitVal = 10): Promise<FirebaseVideo[]> {
     try {
       const videosQuery = query(
         collection(db, 'videos'),
         where('userId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(videosQuery);
@@ -536,13 +536,13 @@ export const videoService = {
   },
   
   // البحث عن فيديوهات بواسطة الوسوم
-  async searchVideosByTags(tag: string, limit = 10): Promise<FirebaseVideo[]> {
+  async searchVideosByTags(tag: string, limitVal = 10): Promise<FirebaseVideo[]> {
     try {
       const videosQuery = query(
         collection(db, 'videos'),
         where('tags', 'array-contains', tag),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(videosQuery);
@@ -712,7 +712,7 @@ export const commentService = {
   },
   
   // الحصول على تعليقات فيديو
-  async getVideoComments(videoId: string, limit = 20): Promise<FirebaseComment[]> {
+  async getVideoComments(videoId: string, limitVal = 20): Promise<FirebaseComment[]> {
     try {
       // الحصول على التعليقات الرئيسية فقط (ليست ردودًا)
       const commentsQuery = query(
@@ -720,7 +720,7 @@ export const commentService = {
         where('videoId', '==', videoId),
         where('parentId', '==', null),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(commentsQuery);
@@ -736,13 +736,13 @@ export const commentService = {
   },
   
   // الحصول على الردود على تعليق
-  async getCommentReplies(commentId: string, limit = 10): Promise<FirebaseComment[]> {
+  async getCommentReplies(commentId: string, limitVal = 10): Promise<FirebaseComment[]> {
     try {
       const repliesQuery = query(
         collection(db, 'comments'),
         where('parentId', '==', commentId),
         orderBy('createdAt', 'asc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(repliesQuery);
@@ -887,13 +887,13 @@ export const notificationService = {
   },
   
   // الحصول على إشعارات المستخدم
-  async getUserNotifications(userId: string, limit = 20): Promise<FirebaseNotification[]> {
+  async getUserNotifications(userId: string, limitVal = 20): Promise<FirebaseNotification[]> {
     try {
       const notificationsQuery = query(
         collection(db, 'notifications'),
         where('recipientId', '==', userId),
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limitQuery(limitVal)
       );
       
       const querySnapshot = await getDocs(notificationsQuery);

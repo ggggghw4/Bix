@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { WifiOffIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { WifiIcon } from '@heroicons/react/24/solid';
 import BottomNav from '@/components/layout/BottomNav';
 
 export default function OfflinePage() {
@@ -35,7 +36,7 @@ export default function OfflinePage() {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md max-w-md w-full transition-colors duration-300">
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-indigo-100 dark:bg-indigo-900 rounded-full transition-colors duration-300">
-              <WifiOffIcon className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
+              <WifiIcon className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
             </div>
           </div>
           

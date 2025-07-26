@@ -73,7 +73,7 @@ async function cacheFirst(request) {
       cache.put(request, networkResponse.clone());
     }
     return networkResponse;
-  } catch (_) {
+  } catch (error) {
     // If both cache and network fail, show offline page
     if (request.mode === 'navigate') {
       const cache = await caches.open(CACHE_NAME);
@@ -95,7 +95,7 @@ async function networkFirst(request) {
       cache.put(request, networkResponse.clone());
     }
     return networkResponse;
-  } catch (_) {
+  } catch (error) {
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
       return cachedResponse;

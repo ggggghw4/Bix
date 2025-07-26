@@ -50,7 +50,7 @@ const mockConversation = {
   ],
 };
 
-export default function ChatPage({ params }: { params: { id: string } }) {
+export default function ChatPage({ params }: any) {
   const { user } = useAuth();
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState(mockConversation.messages);
