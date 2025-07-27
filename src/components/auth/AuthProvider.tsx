@@ -11,18 +11,21 @@ type ExtendedUser = User | {
   displayName: string | null;
   email?: string | null;
   photoURL?: string | null;
+  phoneNumber?: string | null;
 };
 
 type AuthContextType = {
   user: ExtendedUser | null;
   loading: boolean;
   isGuest: boolean;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   isGuest: false,
+  logout: async () => { console.log('Logout not implemented'); },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -31,6 +34,39 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGuest, setIsGuest] = useState(false);
+  
+  // Logout function
+  const logout = async (): Promise<void> => {
+    try {
+      // If using Firebase auth
+      if (!isGuest) {
+        try {
+          await auth.signOut();
+        } catch (error) {
+          console.error("Firebase signOut error:", error);
+        }
+      }
+      
+      // For guest users or as a fallback
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.removeItem('bix-guest-user');
+        } catch (error) {
+          console.error("Error removing guest user from localStorage:", error);
+        }
+      }
+      
+      // Reset state
+      setUser(null);
+      setIsGuest(false);
+      
+      // Redirect will be handled by the component that calls this function
+      return Promise.resolve();
+    } catch (error) {
+      console.error("Logout error:", error);
+      return Promise.reject(error);
+    }
+  };
 
   useEffect(() => {
     // وضع علامة لتتبع ما إذا كان المكون لا يزال مثبتًا
@@ -178,7 +214,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, isGuest }}>
+    <AuthContext.Provider value={{ user, loading, isGuest, logout }}>
       {children}
     </AuthContext.Provider>
   );

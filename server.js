@@ -33,7 +33,7 @@ app.prepare().then(() => {
   }).listen(port, hostname, (err) => {
     if (err) throw err;
     console.log(`> Ready on http://${hostname}:${port}`);
-    console.log(`> Access via: https://work-1-ryuuqjomxbqjnxrs.prod-runtime.all-hands.dev`);
-    console.log(`> Alternative access: https://work-2-ryuuqjomxbqjnxrs.prod-runtime.all-hands.dev`);
+    console.log(`> Access via: https://work-1-kilstscpdfyxvpmy.prod-runtime.all-hands.dev`);
+    console.log(`> Alternative access: https://work-2-kilstscpdfyxvpmy.prod-runtime.all-hands.dev`);
   });
 });

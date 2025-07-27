@@ -171,7 +171,7 @@ export default function NotificationsPanel() {
       {/* زر الإشعارات */}
       <button
         onClick={() => setIsOpen(true)}
-        className="relative p-2 text-gray-700 hover:bg-gray-100 rounded-full"
+        className="relative p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors duration-300"
         aria-label="الإشعارات"
       >
         <BellIcon className="h-6 w-6" />
@@ -203,21 +203,21 @@ export default function NotificationsPanel() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="w-screen max-w-md"
               >
-                <div className="h-full flex flex-col bg-white shadow-xl">
-                  <div className="flex items-center justify-between px-4 py-3 border-b">
-                    <h2 className="text-lg font-medium">الإشعارات</h2>
+                <div className="h-full flex flex-col bg-white dark:bg-gray-900 shadow-xl transition-colors duration-300">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-white transition-colors duration-300">الإشعارات</h2>
                     <div className="flex items-center space-x-4 rtl:space-x-reverse">
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllAsRead}
-                          className="text-sm text-indigo-600 hover:text-indigo-800"
+                          className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-300"
                         >
                           تحديد الكل كمقروء
                         </button>
                       )}
                       <button
                         onClick={() => setIsOpen(false)}
-                        className="text-gray-400 hover:text-gray-500"
+                        className="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 transition-colors duration-300"
                       >
                         <XMarkIcon className="h-6 w-6" />
                       </button>
@@ -226,7 +226,7 @@ export default function NotificationsPanel() {
                   
                   <div className="flex-1 overflow-y-auto p-4">
                     {notifications.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                      <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400 transition-colors duration-300">
                         <BellIcon className="h-12 w-12 mb-4" />
                         <p>ليس لديك إشعارات حالياً</p>
                       </div>
@@ -236,8 +236,10 @@ export default function NotificationsPanel() {
                           <li
                             key={notification.id}
                             className={`flex p-3 rounded-lg ${
-                              !notification.read ? 'bg-indigo-50' : 'bg-white'
-                            }`}
+                              !notification.read 
+                                ? 'bg-indigo-50 dark:bg-indigo-900/30' 
+                                : 'bg-white dark:bg-gray-800'
+                            } transition-colors duration-300`}
                           >
                             {notification.user ? (
                               <div className="flex-shrink-0 mr-3 rtl:ml-3 rtl:mr-0">
@@ -266,7 +268,7 @@ export default function NotificationsPanel() {
                             )}
                             
                             <div className="flex-1 min-w-0">
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
                                 {notification.user && (
                                   <Link href={`/profile/${notification.user.username}`} className="font-bold hover:underline">
                                     {notification.user.username}
@@ -274,14 +276,14 @@ export default function NotificationsPanel() {
                                 )}{' '}
                                 {notification.message}
                               </div>
-                              <div className="mt-1 text-xs text-gray-500">
+                              <div className="mt-1 text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
                                 {notification.timestamp}
                               </div>
                               
                               {notification.videoId && (
                                 <Link
                                   href={`/video/${notification.videoId}${notification.commentId ? `?comment=${notification.commentId}` : ''}`}
-                                  className="mt-2 inline-block text-xs text-indigo-600 hover:text-indigo-800"
+                                  className="mt-2 inline-block text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-300"
                                   onClick={() => markAsRead(notification.id)}
                                 >
                                   عرض {notification.type === 'comment' || notification.type === 'mention' ? 'التعليق' : 'الفيديو'}
@@ -292,7 +294,7 @@ export default function NotificationsPanel() {
                             <div className="flex-shrink-0 self-start ml-2 rtl:mr-2 rtl:ml-0">
                               <button
                                 onClick={() => deleteNotification(notification.id)}
-                                className="text-gray-400 hover:text-gray-500"
+                                className="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 transition-colors duration-300"
                               >
                                 <XMarkIcon className="h-4 w-4" />
                               </button>

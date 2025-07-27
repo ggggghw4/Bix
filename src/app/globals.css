@@ -25,6 +25,12 @@ body {
   color: var(--foreground);
   font-family: 'Geist', 'Tajawal', Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  /* تحسينات للهاتف المحمول */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overscroll-behavior: none;
 }
 
 /* دعم اللغة العربية */
@@ -47,6 +53,81 @@ html[dir="rtl"] .icon-right {
 /* تحسينات إضافية للوضع المظلم */
 .dark .bg-white {
   background-color: #1a1a1a;
+}
+
+/* تحسينات للهاتف المحمول */
+@media (max-width: 768px) {
+  /* تحسين التمرير */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* تحسين الفيديو للهاتف المحمول */
+  video {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    background: #000;
+  }
+  
+  /* تحسين الأزرار للمس */
+  button, .button {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+  
+  /* تحسين النصوص للهاتف المحمول */
+  .mobile-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* منع التكبير عند التركيز على الحقول */
+  input, textarea, select {
+    font-size: 16px;
+  }
+}
+
+/* تحسينات للشاشات الصغيرة جداً */
+@media (max-width: 375px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .text-sm {
+    font-size: 14px;
+  }
+  
+  .text-xs {
+    font-size: 12px;
+  }
+}
+
+/* تحسينات للتفاعل باللمس */
+.touch-friendly {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* تحسين الانتقالات */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* تحسين الظلال للهاتف المحمول */
+.mobile-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .mobile-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .dark .text-gray-900 {

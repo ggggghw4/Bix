@@ -15,6 +15,8 @@ const findVideoById = (id: string) => {
   return mockVideos.find(video => video.id === id) || mockVideos[0];
 };
 
+
+
 export default function VideoPage() {
   const { id } = useParams();
   const { user, loading } = useAuth();

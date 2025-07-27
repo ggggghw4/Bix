@@ -30,6 +30,7 @@ type VideoCardProps = {
     comments: number;
     shares: number;
     tags?: string[];
+    isFollowing?: boolean;
   };
   isCompact?: boolean;
   autoPlay?: boolean;
@@ -52,13 +53,16 @@ function VideoCard({
     likes, 
     comments, 
     shares,
-    tags = []
+    tags = [],
+    isFollowing = false
   } = video;
   
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [isInView, setIsInView] = useState(false);
+  const [isUserFollowing, setIsUserFollowing] = useState(isFollowing);
+  const [watchPoints, setWatchPoints] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   // استخدام try/catch لتجنب الأخطاء إذا كان useToast غير متاح
@@ -155,6 +159,47 @@ function VideoCard({
       });
     }
   };
+
+  const toggleFollow = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newFollowingState = !isUserFollowing;
+    setIsUserFollowing(newFollowingState);
+    
+    // إظهار إشعار عند المتابعة
+    if (toast.showToast) {
+      toast.showToast({
+        type: newFollowingState ? 'success' : 'info',
+        title: newFollowingState ? 'تمت المتابعة' : 'تم إلغاء المتابعة',
+        message: newFollowingState ? `أصبحت تتابع @${username}` : `تم إلغاء متابعة @${username}`,
+        duration: 3000
+      });
+    }
+  };
+
+  // نظام النقاط - إضافة نقاط عند المشاهدة
+  useEffect(() => {
+    if (isInView && isPlaying) {
+      const pointsTimer = setInterval(() => {
+        setWatchPoints(prev => {
+          const newPoints = prev + 1;
+          
+          // تحديث النقاط في localStorage
+          const currentPoints = parseInt(localStorage.getItem('bix-user-points') || '0');
+          const updatedPoints = currentPoints + 1;
+          localStorage.setItem('bix-user-points', updatedPoints.toString());
+          
+          // إرسال حدث تحديث النقاط
+          window.dispatchEvent(new CustomEvent('pointsUpdated', { 
+            detail: { points: updatedPoints } 
+          }));
+          
+          return newPoints;
+        });
+      }, 5000); // نقطة كل 5 ثوان
+
+      return () => clearInterval(pointsTimer);
+    }
+  }, [isInView, isPlaying]);
 
   const togglePlayPause = () => {
     if (videoRef.current) {
@@ -260,83 +305,41 @@ function VideoCard({
         )}
       </div>
       
-      {/* Video info overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent z-20">
-        <div className="flex items-end">
-          <div className="flex-1">
-            <Link href={`/profile/${username}`} className="flex items-center mb-2">
-              <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-white mr-3">
-                <Image
-                  src={userImage}
-                  alt={username}
-                  width={40}
-                  height={40}
-                  className="object-cover"
-                />
-              </div>
-              <span className="font-medium text-white">@{username}</span>
-            </Link>
-            
-            <p className="text-white mb-2">{caption}</p>
-            
-            {tags.length > 0 && (
-              <div className="flex flex-wrap mb-2">
-                {tags.map((tag, index) => (
-                  <Link 
-                    key={index} 
-                    href={`/discover?tag=${tag}`}
-                    className="text-white font-medium mr-2"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    #{tag}
-                  </Link>
-                ))}
-              </div>
-            )}
-            
-            <div className="flex items-center">
-              <MusicalNoteIcon className="h-4 w-4 text-white mr-1" />
-              <p className="text-white text-sm">{audioTitle}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Action buttons */}
-      <div className="absolute right-4 bottom-24 flex flex-col items-center space-y-4 z-20">
+      {/* Action buttons - Right side, mobile optimized */}
+      <div className="absolute right-3 bottom-32 flex flex-col items-center space-y-6 z-30">
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={toggleLike}
           className="flex flex-col items-center"
         >
-          <div className="bg-black/30 rounded-full p-2">
+          <div className="bg-black/40 backdrop-blur-sm rounded-full p-3 shadow-lg">
             {isLiked ? (
-              <HeartIconSolid className="h-8 w-8 text-red-500" />
+              <HeartIconSolid className="h-7 w-7 text-red-500" />
             ) : (
-              <HeartIcon className="h-8 w-8 text-white" />
+              <HeartIcon className="h-7 w-7 text-white" />
             )}
           </div>
-          <span className="text-white text-xs mt-1">{isLiked ? likes + 1 : likes}</span>
+          <span className="text-white text-xs mt-1 font-medium">{isLiked ? likes + 1 : likes}</span>
         </motion.button>
 
         <motion.button
           whileTap={{ scale: 0.9 }}
           className="flex flex-col items-center"
         >
-          <Link href={`/video/${id}`} className="bg-black/30 rounded-full p-2">
-            <ChatBubbleOvalLeftIcon className="h-8 w-8 text-white" />
+          <Link href={`/video/${id}`} className="bg-black/40 backdrop-blur-sm rounded-full p-3 shadow-lg">
+            <ChatBubbleOvalLeftIcon className="h-7 w-7 text-white" />
           </Link>
-          <span className="text-white text-xs mt-1">{comments}</span>
+          <span className="text-white text-xs mt-1 font-medium">{comments}</span>
         </motion.button>
 
         <motion.button
           whileTap={{ scale: 0.9 }}
           className="flex flex-col items-center"
         >
-          <div className="bg-black/30 rounded-full p-2">
-            <ShareIcon className="h-8 w-8 text-white" />
+          <div className="bg-black/40 backdrop-blur-sm rounded-full p-3 shadow-lg">
+            <ShareIcon className="h-7 w-7 text-white" />
           </div>
-          <span className="text-white text-xs mt-1">{shares}</span>
+          <span className="text-white text-xs mt-1 font-medium">{shares}</span>
         </motion.button>
         
         <motion.button
@@ -344,14 +347,74 @@ function VideoCard({
           onClick={toggleSave}
           className="flex flex-col items-center"
         >
-          <div className="bg-black/30 rounded-full p-2">
+          <div className="bg-black/40 backdrop-blur-sm rounded-full p-3 shadow-lg">
             {isSaved ? (
-              <BookmarkIconSolid className="h-8 w-8 text-yellow-500" />
+              <BookmarkIconSolid className="h-7 w-7 text-yellow-500" />
             ) : (
-              <BookmarkIcon className="h-8 w-8 text-white" />
+              <BookmarkIcon className="h-7 w-7 text-white" />
             )}
           </div>
+          <span className="text-white text-xs mt-1 font-medium">حفظ</span>
         </motion.button>
+      </div>
+
+      {/* Creator info and video description - Bottom left, mobile optimized */}
+      <div className="absolute bottom-0 left-0 right-20 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-20">
+        {/* Creator info with follow button */}
+        <div className="flex items-center mb-3">
+          <Link href={`/profile/${username}`} className="flex items-center flex-1">
+            <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-white mr-3 shadow-lg">
+              <Image
+                src={userImage}
+                alt={username}
+                width={48}
+                height={48}
+                className="object-cover"
+              />
+            </div>
+            <div className="flex-1">
+              <span className="font-bold text-white text-base block">@{username}</span>
+            </div>
+          </Link>
+          
+          {/* Follow button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleFollow}
+            className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 ${
+              isUserFollowing 
+                ? 'bg-gray-600/80 text-white border border-gray-500' 
+                : 'bg-red-500 text-white hover:bg-red-600'
+            }`}
+          >
+            {isUserFollowing ? 'متابَع' : 'متابعة'}
+          </motion.button>
+        </div>
+        
+        {/* Video description */}
+        <p className="text-white text-sm mb-2 leading-relaxed">{caption}</p>
+        
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="flex flex-wrap mb-2">
+            {tags.map((tag, index) => (
+              <Link 
+                key={index} 
+                href={`/discover?tag=${tag}`}
+                className="text-white font-medium mr-2 text-sm hover:text-blue-300 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                #{tag}
+              </Link>
+            ))}
+          </div>
+        )}
+        
+        {/* Audio info */}
+        <div className="flex items-center">
+          <MusicalNoteIcon className="h-4 w-4 text-white mr-1" />
+          <p className="text-white text-sm opacity-90">{audioTitle}</p>
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,8 @@ export const mockVideos = [
     likes: 1245,
     comments: 89,
     shares: 45,
-    tags: ['dance', 'trending', 'summer']
+    tags: ['dance', 'trending', 'summer'],
+    isFollowing: false
   },
   {
     id: '2',
@@ -22,7 +23,8 @@ export const mockVideos = [
     likes: 2341,
     comments: 156,
     shares: 78,
-    tags: ['travel', 'bali', 'sunset', 'vacation']
+    tags: ['travel', 'bali', 'sunset', 'vacation'],
+    isFollowing: true
   },
   {
     id: '3',
@@ -34,7 +36,8 @@ export const mockVideos = [
     likes: 876,
     comments: 42,
     shares: 23,
-    tags: ['food', 'cooking', 'recipe', 'pasta']
+    tags: ['food', 'cooking', 'recipe', 'pasta'],
+    isFollowing: false
   },
   {
     id: '4',
@@ -46,7 +49,8 @@ export const mockVideos = [
     likes: 3452,
     comments: 213,
     shares: 98,
-    tags: ['fitness', 'workout', 'motivation', 'health']
+    tags: ['fitness', 'workout', 'motivation', 'health'],
+    isFollowing: true
   },
   {
     id: '5',
@@ -58,7 +62,8 @@ export const mockVideos = [
     likes: 5678,
     comments: 321,
     shares: 145,
-    tags: ['cats', 'pets', 'cute', 'animals']
+    tags: ['cats', 'pets', 'cute', 'animals'],
+    isFollowing: false
   },
   {
     id: '6',
@@ -70,7 +75,8 @@ export const mockVideos = [
     likes: 9876,
     comments: 543,
     shares: 321,
-    tags: ['comedy', 'funny', 'fail', 'lol']
+    tags: ['comedy', 'funny', 'fail', 'lol'],
+    isFollowing: true
   },
   {
     id: '7',
@@ -82,7 +88,8 @@ export const mockVideos = [
     likes: 4321,
     comments: 234,
     shares: 87,
-    tags: ['music', 'guitar', 'cover', 'acoustic']
+    tags: ['music', 'guitar', 'cover', 'acoustic'],
+    isFollowing: false
   },
   {
     id: '8',
@@ -94,7 +101,8 @@ export const mockVideos = [
     likes: 3456,
     comments: 178,
     shares: 65,
-    tags: ['art', 'painting', 'creative', 'artist']
+    tags: ['art', 'painting', 'creative', 'artist'],
+    isFollowing: false
   },
   {
     id: '9',
@@ -106,7 +114,8 @@ export const mockVideos = [
     likes: 7654,
     comments: 432,
     shares: 210,
-    tags: ['fashion', 'style', 'summer', 'ootd']
+    tags: ['fashion', 'style', 'summer', 'ootd'],
+    isFollowing: true
   },
   {
     id: '10',
@@ -118,7 +127,8 @@ export const mockVideos = [
     likes: 5432,
     comments: 321,
     shares: 98,
-    tags: ['tech', 'unboxing', 'gadgets', 'smartphone']
+    tags: ['tech', 'unboxing', 'gadgets', 'smartphone'],
+    isFollowing: false
   }
 ];
 
